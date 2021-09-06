@@ -24,6 +24,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: faldez/tanoshi-builder:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
