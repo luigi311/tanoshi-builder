@@ -21,7 +21,10 @@ RUN apt update && \
     liblz4-dev \
     libbz2-dev \
     zlib1g-dev \
-    libxml2-dev
+    libxml2-dev \
+    lsb-release \
+    wget \
+    software-properties-common
 
 RUN wget https://apt.llvm.org/llvm.sh && \ 
     chmod +x llvm.sh &&\ 
