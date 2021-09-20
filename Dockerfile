@@ -28,4 +28,4 @@ RUN apt update && \
 
 RUN wget https://apt.llvm.org/llvm.sh && \ 
     chmod +x llvm.sh &&\ 
-    ./llvm.sh 11.0
+    ./llvm.sh 11
