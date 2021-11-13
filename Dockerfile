@@ -25,7 +25,14 @@ RUN apt update && \
     libxml2-dev \
     lsb-release \
     wget \
-    software-properties-common
+    software-properties-common \
+    libwebkit2gtk-4.0-dev \
+    curl \
+    libgtk-3-dev \
+    libappindicator3-dev \
+    patchelf \
+    librsvg2-dev \
+    libpango1.0-dev    
 
 RUN wget https://apt.llvm.org/llvm.sh && \ 
     chmod +x llvm.sh &&\ 
