@@ -31,8 +31,7 @@ RUN apt update && \
     libgtk-3-dev \
     libappindicator3-dev \
     patchelf \
-    librsvg2-dev \
-    libpango1.0-dev    
+    librsvg2-dev
 
 RUN wget https://apt.llvm.org/llvm.sh && \ 
     chmod +x llvm.sh &&\ 
