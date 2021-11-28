@@ -1,0 +1,34 @@
+FROM rustembedded/cross:aarch64-unknown-linux-gnu-0.2.1
+
+# We only pay the installation cost once, 
+# it will be cached from the second build onwards
+WORKDIR /app
+
+RUN dpkg --add-architecture arm64 && \
+    apt-get update && \
+    apt-get install -y \
+    libssl-dev:arm64 \
+    libarchive-dev:arm64 \
+    build-essential:arm64 \
+    cmake:arm64 \
+    llvm:arm64 \
+    clang:arm64 \
+    libicu-dev:arm64 \
+    nettle-dev:arm64 \
+    libacl1-dev:arm64 \
+    liblzma-dev:arm64 \
+    libzstd-dev:arm64 \
+    liblz4-dev:arm64 \
+    libbz2-dev:arm64 \
+    zlib1g-dev:arm64 \
+    libxml2-dev:arm64 \
+    lsb-release:arm64 \
+    wget:arm64 \
+    software-properties-common:arm64
+
+RUN wget https://apt.llvm.org/llvm.sh && \ 
+    chmod +x llvm.sh &&\ 
+    ./llvm.sh 11
+
+RUN cargo install cargo-chef trunk
+RUN rustup target add wasm32-unknown-unknown
