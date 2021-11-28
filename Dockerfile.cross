@@ -23,8 +23,7 @@ RUN dpkg --add-architecture arm64 && \
     zlib1g-dev:arm64 \
     libxml2-dev:arm64 \
     lsb-release:arm64 \
-    wget:arm64 \
-    software-properties-common:arm64
+    wget:arm64
 
 RUN wget https://apt.llvm.org/llvm.sh && \ 
     chmod +x llvm.sh &&\ 
