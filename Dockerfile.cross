@@ -1,4 +1,4 @@
-FROM rustembedded/cross:aarch64-unknown-linux-gnu-0.2.1
+FROM rust:latest
 
 # We only pay the installation cost once, 
 # it will be cached from the second build onwards
@@ -29,5 +29,4 @@ RUN wget https://apt.llvm.org/llvm.sh && \
     chmod +x llvm.sh &&\ 
     ./llvm.sh 11
 
-RUN cargo install cargo-chef trunk
-RUN rustup target add wasm32-unknown-unknown
+RUN rustup target add aarch64-unknown-linux-gnu
