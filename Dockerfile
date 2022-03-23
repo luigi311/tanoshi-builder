@@ -35,14 +35,14 @@ RUN wget https://apt.llvm.org/llvm.sh && \
     chmod +x llvm.sh &&\ 
     ./llvm.sh 11
 
-RUN DART_ARCH="$(echo $TARGETPLATFORM | sed 's/\//-/' | sed 's/amd/x/')"
+RUN export DART_ARCH="$(echo $TARGETPLATFORM | sed 's/\//-/' | sed 's/amd/x/')"
 RUN echo $DART_ARCH
 RUN wget "https://storage.googleapis.com/dart-archive/channels/stable/release/2.16.1/sdk/dartsdk-$DART_ARCH-release.zip" && \
     unzip "dartsdk-$DART_ARCH-release.zip"
 RUN export PATH="$PATH:$HOME/dart-sdk/bin"
 
 
-RUN DART_VERSION="1.49.9"
+RUN export DART_VERSION="1.49.9"
 RUN echo $DART_VERSION
 RUN wget" https://github.com/sass/dart-sass/archive/refs/tags/$DART_VERSION.zip" && \
     unzip "$DART_VERSION.zip" && \
