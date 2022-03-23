@@ -3,7 +3,6 @@ FROM rust:1.58.0 AS chef
 # it will be cached from the second build onwards
 RUN cargo install cargo-chef trunk
 RUN rustup target add wasm32-unknown-unknown
-WORKDIR /app
 
 RUN apt update && \
     apt upgrade -y && \
@@ -31,8 +30,21 @@ RUN apt update && \
     libgtk-3-dev \
     patchelf \
     librsvg2-dev\
-    libpango1.0-dev
+    libpango1.0-dev \
+    unzip
 
 RUN wget https://apt.llvm.org/llvm.sh && \ 
     chmod +x llvm.sh &&\ 
     ./llvm.sh 11
+
+RUN wget "https://storage.googleapis.com/dart-archive/channels/stable/release/2.16.1/sdk/dartsdk-$(echo $TARGETPLATFORM | sed 's/\//-/')-release.zip" && \
+    unzip "dartsdk-$(echo $TARGETPLATFORM | sed 's/\//-/')-release.zip"
+RUN export PATH="$PATH:$HOME/dart-sdk/bin"
+
+RUN wget https://github.com/sass/dart-sass/archive/refs/tags/1.49.9.zip && \
+    unzip 1.49.9.zip && \
+    cd dart-sass-1.49.9 && \
+    dart pub get && \
+    dart compile exe bin/sass.dart -o $HOME/dart-sdk/bin/sass -Dversion=1.49.9 && \
+    
+WORKDIR /app
