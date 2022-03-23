@@ -34,7 +34,7 @@ RUN apt update && \
 RUN DART_ARCH=$(echo $TARGETPLATFORM | sed 's/\//-/' | sed 's/amd/x/') && \
     wget "https://storage.googleapis.com/dart-archive/channels/stable/release/2.16.1/sdk/dartsdk-$DART_ARCH-release.zip" && \
     unzip "dartsdk-$DART_ARCH-release.zip"
-RUN export PATH="$PATH:$HOME/dart-sdk/bin"
+ENV PATH="$PATH:$HOME/dart-sdk/bin"
 
 RUN DART_VERSION="1.49.9" && \
     wget "https://github.com/sass/dart-sass/archive/refs/tags/$DART_VERSION.zip" && \
