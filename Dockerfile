@@ -37,7 +37,7 @@ RUN DART_ARCH=$(echo $TARGETPLATFORM | sed 's/\//-/' | sed 's/amd/x/') && \
 RUN export PATH="$PATH:$HOME/dart-sdk/bin"
 
 RUN DART_VERSION="1.49.9" && \
-    wget" https://github.com/sass/dart-sass/archive/refs/tags/$DART_VERSION.zip" && \
+    wget "https://github.com/sass/dart-sass/archive/refs/tags/$DART_VERSION.zip" && \
     unzip "$DART_VERSION.zip" && \
     cd "dart-sass-$DART_VERSION" && \
     dart pub get && \
