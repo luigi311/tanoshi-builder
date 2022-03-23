@@ -1,10 +1,6 @@
 FROM rust:1.58.0 AS chef 
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
-# We only pay the installation cost once, 
-# it will be cached from the second build onwards
-RUN cargo install cargo-chef trunk
-RUN rustup target add wasm32-unknown-unknown
 
 RUN apt update && \
     apt upgrade -y && \
@@ -39,17 +35,23 @@ RUN wget https://apt.llvm.org/llvm.sh && \
     chmod +x llvm.sh &&\ 
     ./llvm.sh 11
 
-RUN export DART_ARCH="echo $TARGETPLATFORM | sed 's/\//-/' | sed 's/amd/x/'"
-RUN wget "https://storage.googleapis.com/dart-archive/channels/stable/release/2.16.1/sdk/dartsdk-$DART_ARCH-release.zip" && \
+RUN DART_ARCH="$(echo $TARGETPLATFORM | sed 's/\//-/' | sed 's/amd/x/')"
+RUN wget https://storage.googleapis.com/dart-archive/channels/stable/release/2.16.1/sdk/dartsdk-$DART_ARCH-release.zip && \
     unzip dartsdk-$DART_ARCH-release.zip
 RUN export PATH="$PATH:$HOME/dart-sdk/bin"
 
 
-RUN export DART_VERSION="1.49.9"
+RUN DART_VERSION="1.49.9"
 RUN wget https://github.com/sass/dart-sass/archive/refs/tags/$DART_VERSION.zip && \
     unzip $DART_VERSION.zip && \
     cd dart-sass-$DART_VERSION && \
     dart pub get && \
     dart compile exe bin/sass.dart -o $HOME/dart-sdk/bin/sass -Dversion=$DART_VERSION && \
     
+
+# We only pay the installation cost once, 
+# it will be cached from the second build onwards
+RUN cargo install cargo-chef trunk
+RUN rustup target add wasm32-unknown-unknown
+
 WORKDIR /app
