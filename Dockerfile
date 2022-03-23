@@ -29,7 +29,8 @@ RUN apt update && \
     patchelf \
     librsvg2-dev\
     libpango1.0-dev \
-    unzip
+    unzip \
+    binaryen
 
 WORKDIR /root
 
@@ -47,9 +48,9 @@ RUN DART_VERSION="1.49.9" && \
 
 # We only pay the installation cost once, 
 # it will be cached from the second build onwards
-RUN cargo install cargo-chef
-RUN cargo install trunk
-RUN cargo install wasm-pack
+RUN cargo install cargo-chef 
+RUN cargo install trunk 
+RUN cargo install wasm-bindgen-cli
 RUN rustup target add wasm32-unknown-unknown
 
 WORKDIR /app
