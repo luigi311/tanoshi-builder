@@ -1,4 +1,6 @@
 FROM rust:1.58.0 AS chef 
+ARG TARGETPLATFORM
+ARG BUILDPLATFORM
 # We only pay the installation cost once, 
 # it will be cached from the second build onwards
 RUN cargo install cargo-chef trunk
