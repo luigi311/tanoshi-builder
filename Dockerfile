@@ -41,8 +41,7 @@ RUN DART_VERSION="1.49.9" && \
     unzip "$DART_VERSION.zip" && \
     cd "dart-sass-$DART_VERSION" && \
     dart pub get && \
-    dart compile exe bin/sass.dart -o "$HOME/dart-sdk/bin/sass" -Dversion="$DART_VERSION" && \
-    
+    dart compile exe bin/sass.dart -o "$HOME/dart-sdk/bin/sass" -Dversion="$DART_VERSION"
 
 # We only pay the installation cost once, 
 # it will be cached from the second build onwards
