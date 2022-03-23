@@ -2,8 +2,8 @@ FROM rust:1.58.0-bullseye AS chef
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 
-RUN echo "deb http://deb.debian.org/debian bullseye-backports main contrib non-free" | sudo tee /etc/apt/sources.list > /dev/null
-RUN echo "deb-src http://deb.debian.org/debian bullseye-backports main contrib non-free" | sudo tee /etc/apt/sources.list > /dev/null
+RUN echo "deb http://deb.debian.org/debian bullseye-backports main contrib non-free" >> /etc/apt/sources.list
+RUN echo "deb-src http://deb.debian.org/debian bullseye-backports main contrib non-free" >> /etc/apt/sources.list
 
 RUN apt update && \
     apt upgrade -y && \
