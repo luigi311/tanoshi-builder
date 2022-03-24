@@ -1,9 +1,6 @@
-FROM rust:1.58.0-bullseye AS chef 
+FROM debian:bookworm AS chef 
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
-
-RUN echo "deb http://deb.debian.org/debian bullseye-backports main contrib non-free" >> /etc/apt/sources.list
-RUN echo "deb-src http://deb.debian.org/debian bullseye-backports main contrib non-free" >> /etc/apt/sources.list
 
 RUN apt update && \
     apt upgrade -y && \
@@ -35,15 +32,21 @@ RUN apt update && \
     unzip \
     binaryen
 
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain 1.58.0
+ENV PATH="$PATH:/root/.cargo/bin"
+
+RUN rustup target add wasm32-unknown-unknown
+
 WORKDIR /root
 
 RUN DART_ARCH=$(echo $TARGETPLATFORM | sed 's/\//-/' | sed 's/amd/x/') && \
-    wget "https://storage.googleapis.com/dart-archive/channels/stable/release/2.16.1/sdk/dartsdk-$DART_ARCH-release.zip" && \
+    curl -s "https://storage.googleapis.com/dart-archive/channels/stable/release/2.16.1/sdk/dartsdk-$DART_ARCH-release.zip" -o "dartsdk-$DART_ARCH-release.zip" && \
     unzip "dartsdk-$DART_ARCH-release.zip"
-ENV PATH="$PATH:/root/dart-sdk/bin"
+    
+ENV PATH="$PATH:/root/dart-sdk/bin:/root/.cargo/bin"
 
-RUN DART_VERSION="1.49.9" && \
-    wget "https://github.com/sass/dart-sass/archive/refs/tags/$DART_VERSION.zip" && \
+ENV DART_VERSION="1.49.9"
+RUN curl -sL "https://github.com/sass/dart-sass/archive/refs/tags/$DART_VERSION.zip" -o "$DART_VERSION.zip" && \
     unzip "$DART_VERSION.zip" && \
     cd "dart-sass-$DART_VERSION" && \
     dart pub get && \
@@ -51,9 +54,8 @@ RUN DART_VERSION="1.49.9" && \
 
 # We only pay the installation cost once, 
 # it will be cached from the second build onwards
-RUN cargo install cargo-chef 
-RUN cargo install trunk 
-RUN cargo install wasm-bindgen-cli
-RUN rustup target add wasm32-unknown-unknown
+RUN cargo install cargo-chef --locked  --version 0.1.35
+RUN cargo install trunk --locked --version 0.14.0
+RUN cargo install wasm-bindgen-cli --locked --version 0.2.79 
 
 WORKDIR /app
