@@ -32,7 +32,7 @@ RUN apt update && \
     unzip \
     binaryen
 
-RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain 1.58.0
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain 1.62.0
 ENV PATH="$PATH:/root/.cargo/bin"
 
 RUN rustup target add wasm32-unknown-unknown
@@ -42,7 +42,7 @@ WORKDIR /root
 RUN DART_ARCH=$(echo $TARGETPLATFORM | sed 's/\//-/' | sed 's/amd/x/') && \
     curl -s "https://storage.googleapis.com/dart-archive/channels/stable/release/2.16.1/sdk/dartsdk-$DART_ARCH-release.zip" -o "dartsdk-$DART_ARCH-release.zip" && \
     unzip "dartsdk-$DART_ARCH-release.zip"
-    
+
 ENV PATH="$PATH:/root/dart-sdk/bin:/root/.cargo/bin"
 
 ENV DART_VERSION="1.49.9"
