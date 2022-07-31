@@ -56,6 +56,6 @@ RUN curl -sL "https://github.com/sass/dart-sass/archive/refs/tags/$DART_VERSION.
 # it will be cached from the second build onwards
 RUN cargo install cargo-chef --locked  --version 0.1.38
 RUN cargo install trunk --locked --version 0.16.0
-RUN cargo install wasm-bindgen-cli --locked --version 0.2.82 
+RUN cargo install wasm-bindgen-cli --locked --version 0.2.80 
 
 WORKDIR /app
