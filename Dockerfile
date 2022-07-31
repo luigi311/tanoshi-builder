@@ -45,7 +45,7 @@ RUN DART_ARCH=$(echo $TARGETPLATFORM | sed 's/\//-/' | sed 's/amd/x/') && \
 
 ENV PATH="$PATH:/root/dart-sdk/bin:/root/.cargo/bin"
 
-ENV DART_VERSION="1.49.9"
+ENV DART_VERSION="1.50.0"
 RUN curl -sL "https://github.com/sass/dart-sass/archive/refs/tags/$DART_VERSION.zip" -o "$DART_VERSION.zip" && \
     unzip "$DART_VERSION.zip" && \
     cd "dart-sass-$DART_VERSION" && \
@@ -54,8 +54,8 @@ RUN curl -sL "https://github.com/sass/dart-sass/archive/refs/tags/$DART_VERSION.
 
 # We only pay the installation cost once, 
 # it will be cached from the second build onwards
-RUN cargo install cargo-chef --locked  --version 0.1.35
-RUN cargo install trunk --locked --version 0.14.0
-RUN cargo install wasm-bindgen-cli --locked --version 0.2.79 
+RUN cargo install cargo-chef --locked  --version 0.1.38
+RUN cargo install trunk --locked --version 0.16.0
+RUN cargo install wasm-bindgen-cli --locked --version 0.2.82 
 
 WORKDIR /app
