@@ -32,7 +32,7 @@ RUN apt update && \
     unzip \
     binaryen
 
-RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain 1.63.0
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain 1.69.0
 ENV PATH="$PATH:/root/.cargo/bin"
 
 RUN rustup target add wasm32-unknown-unknown
