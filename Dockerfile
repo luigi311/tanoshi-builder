@@ -2,35 +2,37 @@ FROM debian:bookworm AS chef
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 
-RUN apt update && \
-    apt upgrade -y && \
+RUN apt-get update && \
+    apt-get upgrade -y && \
     apt-get install -y \
-    libssl-dev \
-    libarchive-dev \
-    build-essential \
-    cmake \
-    llvm \
-    clang \
-    libicu-dev \
-    nettle-dev \
-    libacl1-dev \
-    liblzma-dev \
-    libzstd-dev \
-    liblz4-dev \
-    libbz2-dev \
-    zlib1g-dev \
-    libxml2-dev \
-    lsb-release \
-    wget \
-    software-properties-common \
-    libwebkit2gtk-4.0-dev \
-    curl \
-    libgtk-3-dev \
-    patchelf \
-    librsvg2-dev\
-    libpango1.0-dev \
-    unzip \
-    binaryen
+        libssl-dev \
+        libarchive-dev \
+        build-essential \
+        cmake \
+        llvm \
+        clang \
+        libicu-dev \
+        nettle-dev \
+        libacl1-dev \
+        liblzma-dev \
+        libzstd-dev \
+        liblz4-dev \
+        libbz2-dev \
+        zlib1g-dev \
+        libxml2-dev \
+        lsb-release \
+        wget \
+        software-properties-common \
+        libwebkit2gtk-4.0-dev \
+        curl \
+        libgtk-3-dev \
+        patchelf \
+        librsvg2-dev\
+        libpango1.0-dev \
+        unzip \
+        binaryen && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain 1.69.0
 ENV PATH="$PATH:/root/.cargo/bin"
