@@ -60,6 +60,6 @@ RUN curl -sL "https://github.com/sass/dart-sass/archive/refs/tags/${DART_SASS_VE
 RUN cargo install cargo-chef --locked --version 0.1.62
 # Lock trunk at 0.16.0 to avoid https://github.com/thedodd/trunk/issues/575
 RUN cargo install trunk --locked --version 0.16.0
-RUN cargo install wasm-bindgen-cli --locked --version 0.2.80
+RUN cargo install wasm-bindgen-cli --locked --version 0.2.87
 
 WORKDIR /app
