@@ -48,7 +48,7 @@ RUN DART_ARCH=$(echo $TARGETPLATFORM | sed 's/\//-/' | sed 's/amd/x/') && \
 
 ENV PATH="$PATH:/root/dart-sdk/bin:/root/.cargo/bin"
 
-ENV DART_SASS_VERSION="1.58.0"
+ENV DART_SASS_VERSION="1.62.1"
 RUN curl -sL "https://github.com/sass/dart-sass/archive/refs/tags/${DART_SASS_VERSION}.zip" -o "${DART_SASS_VERSION}.zip" && \
     unzip "${DART_SASS_VERSION}.zip" && \
     cd "dart-sass-${DART_SASS_VERSION}" && \
