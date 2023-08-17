@@ -1,8 +1,10 @@
-FROM rust:1.71.1-slim-bookworm AS chef 
+FROM debian:stable-slim AS chef 
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 
 ENV LD_LIBRARY_PATH="/usr/local/lib:/usr/lib:/lib"
+ENV PATH="$PATH:/root/.cargo/bin:/root/dart-sdk/bin"
+
 
 RUN apt-get update && \
     apt-get install -y \
@@ -33,7 +35,8 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-RUN rustup target add wasm32-unknown-unknown
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain 1.71.1 && \ 
+    rustup target add wasm32-unknown-unknown
 
 WORKDIR /root
 
@@ -42,8 +45,6 @@ RUN DART_ARCH=$(echo $TARGETPLATFORM | sed 's/\//-/' | sed 's/amd/x/') && \
     curl -s "https://storage.googleapis.com/dart-archive/channels/stable/release/${DART_SDK_VERSION}/sdk/dartsdk-${DART_ARCH}-release.zip" -o "dartsdk-${DART_ARCH}-release.zip" && \
     unzip "dartsdk-${DART_ARCH}-release.zip" && \
     rm "dartsdk-${DART_ARCH}-release.zip"
-
-ENV PATH="$PATH:/root/dart-sdk/bin"
 
 ENV DART_SASS_VERSION="1.62.1"
 RUN curl -sL "https://github.com/sass/dart-sass/archive/refs/tags/${DART_SASS_VERSION}.zip" -o "${DART_SASS_VERSION}.zip" && \
