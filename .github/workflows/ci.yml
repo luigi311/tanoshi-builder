@@ -15,6 +15,7 @@ on:
 
 jobs:
   build-docker-amd64:
+    permissions: write-all
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -86,6 +87,7 @@ jobs:
           cache-to: type=registry,ref=ghcr.io/${{ github.actor }}/tanoshi-builder:buildcache,mode=max
 
   build-docker-aarch64:
+    permissions: write-all
     runs-on: [self-hosted, arm64]
     if: ${{ github.event_name == 'push' }}
     strategy:
@@ -147,6 +149,7 @@ jobs:
           cache-to: type=registry,ref=ghcr.io/${{ github.actor }}/tanoshi-builder:buildcache-${{ env.ARCH }},mode=max
   
   docker-build-merge:
+    permissions: write-all
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' }}
     needs:
