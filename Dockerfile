@@ -26,11 +26,13 @@ RUN apt-get update && \
         unzip \
         wget \
         curl \
-        libwebkit2gtk-4.0-dev \
+        libwebkit2gtk-4.1-dev \
         libgtk-3-dev \
         patchelf \
         librsvg2-dev\
         libpango1.0-dev \
+        libsoup-3.0-dev \
+        libjavascriptcoregtk-4.1-dev \
         binaryen && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
