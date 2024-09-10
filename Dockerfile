@@ -33,6 +33,7 @@ RUN apt-get update && \
         libpango1.0-dev \
         libsoup-3.0-dev \
         libjavascriptcoregtk-4.1-dev \
+        libb2-dev \
         binaryen && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
