@@ -1,4 +1,4 @@
-FROM debian:stable-slim AS chef 
+FROM debian:bookworm-slim AS chef 
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 
