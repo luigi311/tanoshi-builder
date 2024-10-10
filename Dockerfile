@@ -63,6 +63,6 @@ RUN cargo install cargo-chef --locked --version 0.1.62
 # Lock trunk at 0.16.0 to avoid https://github.com/thedodd/trunk/issues/575
 RUN cargo install trunk --locked --version 0.16.0
 RUN cargo install wasm-bindgen-cli --locked --version 0.2.87
-RUN cargo install tauri-cli --locked --version ^2.0.0-rc
+RUN cargo install tauri-cli --locked --version ^2.0
 
 WORKDIR /app
