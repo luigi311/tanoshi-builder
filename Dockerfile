@@ -8,6 +8,7 @@ ENV PATH="$PATH:/root/.cargo/bin:/root/dart-sdk/bin"
 
 RUN apt-get update && \
     apt-get install -y \
+        file \
         libssl-dev \
         build-essential \
         cmake \
