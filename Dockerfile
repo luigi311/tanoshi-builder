@@ -1,4 +1,4 @@
-FROM debian:trixie-slim AS chef 
+FROM ubuntu:24.04 AS chef 
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 
