@@ -89,7 +89,6 @@ jobs:
   build-docker-aarch64:
     permissions: write-all
     runs-on: [self-hosted, arm64]
-    if: ${{ github.event_name == 'push' }}
     strategy:
       fail-fast: false
       matrix:
