@@ -121,7 +121,6 @@ jobs:
   docker-build-merge:
     permissions: write-all
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'push' }}
     needs:
       - build-docker-amd64
       - build-docker-aarch64
