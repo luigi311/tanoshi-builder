@@ -16,13 +16,8 @@ on:
 jobs:
   build-docker-amd64:
     permissions: write-all
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - dockerfile: Dockerfile
-            variant: slim
+    runs-on: ubuntu-24.04
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -47,36 +42,20 @@ jobs:
           images: |
             ghcr.io/${{ github.actor }}/tanoshi-builder
           tags: |
-            type=raw,value=latest,enable=${{ matrix.variant == 'slim' && github.ref_name == github.event.repository.default_branch }}
-            type=raw,value=dev,enable=${{ matrix.variant == 'slim' && github.ref_name == 'dev' }}
-            type=raw,value=latest,suffix=-${{ matrix.variant }},enable={{ is_default_branch }}
-            type=ref,event=branch,suffix=-${{ matrix.variant }}
-            type=ref,event=pr,suffix=-${{ matrix.variant }}
-            type=semver,pattern={{ version }},suffix=-${{ matrix.variant }}
-            type=semver,pattern={{ major }}.{{ minor }},suffix=-${{ matrix.variant }}
-            type=sha,suffix=-${{ matrix.variant }}
-
-      - name: Build
-        if: "${{ steps.docker_login.outcome != 'success' }}"
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: ${{ matrix.dockerfile }}
-          platforms: linux/amd64
-          push: false
-          tags: ${{ steps.docker_meta_amd64.outputs.tags }}
-          labels: ${{ steps.docker_meta_amd64.outputs.labels }}
-          build-args: |
-            BUILD_WEB=false
-          cache-from: type=registry,ref=ghcr.io/${{ github.actor }}/tanoshi-builder:buildcache
-          cache-to: type=registry,ref=ghcr.io/${{ github.actor }}/tanoshi-builder:buildcache,mode=max
+            type=raw,value=latest,enable={{ is_default_branch }}
+            type=raw,value=dev,enable=${{ github.ref_name == 'dev' }}
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{ version }}
+            type=semver,pattern={{ major }}.{{ minor }}
+            type=sha
 
       - name: Build Push
-        if: "${{ steps.docker_login.outcome == 'success' && steps.docker_meta_amd64.outputs.tags != '' }}"
+        if: "${{ steps.docker_meta_amd64.outputs.tags != '' }}"
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: ${{ matrix.dockerfile }}
+          file: Dockerfile
           platforms: linux/amd64
           push: true
           tags: ${{ steps.docker_meta_amd64.outputs.tags }}
@@ -88,14 +67,7 @@ jobs:
 
   build-docker-aarch64:
     permissions: write-all
-    runs-on: [self-hosted, arm64]
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - dockerfile: Dockerfile
-            variant: slim
-      
+    runs-on: ubuntu-24.04-arm
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -120,14 +92,13 @@ jobs:
           images: |
             ghcr.io/${{ github.actor }}/tanoshi-builder
           tags: |
-            type=raw,value=latest,suffix=-${{ env.ARCH }},enable=${{ matrix.variant == 'slim' && github.ref_name == github.event.repository.default_branch }}
-            type=raw,value=dev,suffix=-${{ env.ARCH }},enable=${{ matrix.variant == 'slim' && github.ref_name == 'dev' }}
-            type=raw,value=latest,suffix=-${{ matrix.variant }}-${{ env.ARCH }},enable={{ is_default_branch }}
-            type=ref,event=branch,suffix=-${{ matrix.variant }}-${{ env.ARCH }}
-            type=ref,event=pr,suffix=-${{ matrix.variant }}-${{ env.ARCH }}
-            type=semver,pattern={{ version }},suffix=-${{ matrix.variant }}-${{ env.ARCH }}
-            type=semver,pattern={{ major }}.{{ minor }},suffix=-${{ matrix.variant }}-${{ env.ARCH }}
-            type=sha,suffix=-${{ matrix.variant }}-${{ env.ARCH }}
+            type=raw,value=dev,suffix=-${{ env.ARCH }},enable=${{ github.ref_name == 'dev' }}
+            type=raw,value=latest,suffix=-${{ env.ARCH }},enable={{ is_default_branch }}
+            type=ref,event=branch,suffix=-${{ env.ARCH }}
+            type=ref,event=pr,suffix=-${{ env.ARCH }}
+            type=semver,pattern={{ version }},suffix=-${{ env.ARCH }}
+            type=semver,pattern={{ major }}.{{ minor }},suffix=-${{ env.ARCH }}
+            type=sha,suffix=-${{ env.ARCH }}
 
       - name: Build Push
         id: build_push
@@ -137,7 +108,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: ${{ matrix.dockerfile }}
+          file: Dockerfile
           platforms: linux/aarch64
           push: true
           tags: ${{ steps.docker_meta_aarch64.outputs.tags }}
@@ -150,16 +121,9 @@ jobs:
   docker-build-merge:
     permissions: write-all
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'push' }}
     needs:
       - build-docker-amd64
       - build-docker-aarch64
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - dockerfile: Dockerfile
-            variant: slim
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -182,14 +146,13 @@ jobs:
           images: |
             ghcr.io/${{ github.actor }}/tanoshi-builder
           tags: |
-            type=raw,value=latest,enable=${{ matrix.variant == 'slim' && github.ref_name == github.event.repository.default_branch }}
-            type=raw,value=dev,enable=${{ matrix.variant == 'slim' && github.ref_name == 'dev' }}
-            type=raw,value=latest,suffix=-${{ matrix.variant }},enable={{ is_default_branch }}
-            type=ref,event=branch,suffix=-${{ matrix.variant }}
-            type=ref,event=pr,suffix=-${{ matrix.variant }}
-            type=semver,pattern={{ version }},suffix=-${{ matrix.variant }}
-            type=semver,pattern={{ major }}.{{ minor }},suffix=-${{ matrix.variant }}
-            type=sha,suffix=-${{ matrix.variant }}
+            type=raw,value=dev,enable=${{ github.ref_name == 'dev' }}
+            type=raw,value=latest,enable={{ is_default_branch }}
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{ version }}
+            type=semver,pattern={{ major }}.{{ minor }}
+            type=sha
   
       - name: Install deps
         run: |
