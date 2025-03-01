@@ -8,6 +8,7 @@ ENV PATH="$PATH:/root/.cargo/bin:/root/dart-sdk/bin"
 
 RUN apt-get update && \
     apt-get install -y \
+        git \
         file \
         libssl-dev \
         build-essential \
