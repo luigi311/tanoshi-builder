@@ -40,7 +40,7 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain 1.85.0 && \ 
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain 1.90.0 && \ 
     rustup target add wasm32-unknown-unknown
 
 WORKDIR /root
