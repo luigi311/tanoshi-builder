@@ -45,13 +45,13 @@ RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain 1.90.0 && \
 
 WORKDIR /root
 
-ENV DART_SDK_VERSION="3.5.3"
+ENV DART_SDK_VERSION="3.9.3"
 RUN DART_ARCH=$(echo $TARGETPLATFORM | sed 's/\//-/' | sed 's/amd/x/') && \
     curl -s "https://storage.googleapis.com/dart-archive/channels/stable/release/${DART_SDK_VERSION}/sdk/dartsdk-${DART_ARCH}-release.zip" -o "dartsdk-${DART_ARCH}-release.zip" && \
     unzip "dartsdk-${DART_ARCH}-release.zip" && \
     rm "dartsdk-${DART_ARCH}-release.zip"
 
-ENV DART_SASS_VERSION="1.79.4"
+ENV DART_SASS_VERSION="1.93.2"
 RUN DART_ARCH=$(echo $TARGETPLATFORM | sed 's/\//-/' | sed 's/amd/x/') && \
     curl -sL "https://github.com/sass/dart-sass/releases/download/${DART_SASS_VERSION}/dart-sass-${DART_SASS_VERSION}-${DART_ARCH}.tar.gz" -o "${DART_SASS_VERSION}.tar.gz" && \
     tar -xvf "${DART_SASS_VERSION}.tar.gz" && \
