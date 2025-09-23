@@ -1,4 +1,4 @@
-FROM ubuntu:24.04 AS chef 
+FROM ubuntu:25.04 AS chef 
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 
@@ -66,8 +66,7 @@ RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/ca
 # it will be cached from the second build onwards
 RUN cargo binstall cargo-chef@0.1 --no-confirm --locked
 RUN cargo binstall trunk@0.21.7 --no-confirm --locked
-# Pin wasm-bindgen-cli to 0.2.93 due to grow table errors
-RUN cargo binstall wasm-bindgen-cli@0.2.93 --no-confirm --locked
+RUN cargo binstall wasm-bindgen-cli@0.2.103 --no-confirm --locked
 RUN cargo binstall tauri-cli@2.0 --no-confirm --locked
 
 WORKDIR /app
