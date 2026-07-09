@@ -1,9 +1,9 @@
-FROM ubuntu:25.04 AS chef 
+FROM ubuntu:26.04 AS chef
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 
 ENV LD_LIBRARY_PATH="/usr/local/lib:/usr/lib:/lib"
-ENV PATH="$PATH:/root/.cargo/bin:/root/dart-sdk/bin"
+ENV PATH="$PATH:/home/ubuntu/.cargo/bin:/home/ubuntu/dart-sdk/bin"
 
 
 RUN apt-get update && \
@@ -40,18 +40,20 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain 1.93.1 && \ 
+USER ubuntu
+WORKDIR /home/ubuntu
+
+
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain 1.93.1 && \
     rustup target add wasm32-unknown-unknown
 
-WORKDIR /root
-
-ENV DART_SDK_VERSION="3.9.3"
+ENV DART_SDK_VERSION="3.12.2"
 RUN DART_ARCH=$(echo $TARGETPLATFORM | sed 's/\//-/' | sed 's/amd/x/') && \
     curl -s "https://storage.googleapis.com/dart-archive/channels/stable/release/${DART_SDK_VERSION}/sdk/dartsdk-${DART_ARCH}-release.zip" -o "dartsdk-${DART_ARCH}-release.zip" && \
     unzip "dartsdk-${DART_ARCH}-release.zip" && \
     rm "dartsdk-${DART_ARCH}-release.zip"
 
-ENV DART_SASS_VERSION="1.93.2"
+ENV DART_SASS_VERSION="1.101.0"
 RUN DART_ARCH=$(echo $TARGETPLATFORM | sed 's/\//-/' | sed 's/amd/x/') && \
     curl -sL "https://github.com/sass/dart-sass/releases/download/${DART_SASS_VERSION}/dart-sass-${DART_SASS_VERSION}-${DART_ARCH}.tar.gz" -o "${DART_SASS_VERSION}.tar.gz" && \
     tar -xvf "${DART_SASS_VERSION}.tar.gz" && \
@@ -62,11 +64,11 @@ RUN DART_ARCH=$(echo $TARGETPLATFORM | sed 's/\//-/' | sed 's/amd/x/') && \
 # Setup cargo binstall
 RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
 
-# We only pay the installation cost once, 
+# We only pay the installation cost once,
 # it will be cached from the second build onwards
 RUN cargo binstall cargo-chef@0.1 --no-confirm --locked
 RUN cargo binstall trunk@0.21.14 --no-confirm --locked
-RUN cargo binstall wasm-bindgen-cli@0.2.103 --no-confirm --locked
+RUN cargo binstall wasm-bindgen-cli@0.2.126 --no-confirm --locked
 RUN cargo binstall tauri-cli@2 --no-confirm --locked
 
 WORKDIR /app
