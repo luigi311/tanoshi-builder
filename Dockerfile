@@ -44,7 +44,7 @@ USER ubuntu
 WORKDIR /home/ubuntu
 
 
-RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain 1.93.1 && \
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain 1.99.1 && \
     rustup target add wasm32-unknown-unknown
 
 ENV DART_SDK_VERSION="3.12.2"
@@ -67,7 +67,7 @@ RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/ca
 # We only pay the installation cost once,
 # it will be cached from the second build onwards
 RUN cargo binstall cargo-chef@0.1 --no-confirm --locked
-RUN cargo binstall trunk@0.21.14 --no-confirm --locked
+RUN cargo binstall trunk@0.22.0 --no-confirm --locked
 RUN cargo binstall wasm-bindgen-cli@0.2.126 --no-confirm --locked
 RUN cargo binstall tauri-cli@2 --no-confirm --locked
 
