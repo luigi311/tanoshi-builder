@@ -47,13 +47,13 @@ WORKDIR /home/ubuntu
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain 1.99.1 && \
     rustup target add wasm32-unknown-unknown
 
-ENV DART_SDK_VERSION="3.12.2"
+ENV DART_SDK_VERSION="3.13.7"
 RUN DART_ARCH=$(echo $TARGETPLATFORM | sed 's/\//-/' | sed 's/amd/x/') && \
     curl -s "https://storage.googleapis.com/dart-archive/channels/stable/release/${DART_SDK_VERSION}/sdk/dartsdk-${DART_ARCH}-release.zip" -o "dartsdk-${DART_ARCH}-release.zip" && \
     unzip "dartsdk-${DART_ARCH}-release.zip" && \
     rm "dartsdk-${DART_ARCH}-release.zip"
 
-ENV DART_SASS_VERSION="1.101.0"
+ENV DART_SASS_VERSION="1.106.1"
 RUN DART_ARCH=$(echo $TARGETPLATFORM | sed 's/\//-/' | sed 's/amd/x/') && \
     curl -sL "https://github.com/sass/dart-sass/releases/download/${DART_SASS_VERSION}/dart-sass-${DART_SASS_VERSION}-${DART_ARCH}.tar.gz" -o "${DART_SASS_VERSION}.tar.gz" && \
     tar -xvf "${DART_SASS_VERSION}.tar.gz" && \
