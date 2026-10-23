@@ -68,7 +68,7 @@ RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/ca
 # it will be cached from the second build onwards
 RUN cargo binstall cargo-chef@0.1 --no-confirm --locked
 RUN cargo binstall trunk@0.22.0 --no-confirm --locked
-RUN cargo binstall wasm-bindgen-cli@0.2.126 --no-confirm --locked
+RUN cargo binstall wasm-bindgen-cli@0.2.129 --no-confirm --locked
 RUN cargo binstall tauri-cli@2 --no-confirm --locked
 
 WORKDIR /app
